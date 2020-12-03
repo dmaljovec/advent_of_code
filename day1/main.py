@@ -72,7 +72,7 @@ def part_two(filename='input.txt', target=2020):
     Returns
     -------
     int
-       The product of the two integers that sum to the target value 
+       The product of the three integers that sum to the target value 
 
     Raises
     ------
