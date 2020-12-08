@@ -1,7 +1,6 @@
 import re
 from collections import defaultdict
-
-
+from functools import lru_cache
 
 def part_one(filename='input.txt', target='shiny gold'):
     
@@ -31,9 +30,6 @@ def part_one(filename='input.txt', target='shiny gold'):
 print(f'Part One: {part_one()}')
 
 def part_two(filename='input.txt', target='shiny gold'):
-    # This looks ripe for memoization. We are going to be computing partial
-    # solutions over and over again. My solution below does not employ this
-    # strategy, but I could be goaded into trying to do it.
 
     # Note, I am swapping the key and value of this dictionary. In this part,
     # I want the key to be the bag containing things and the value to be a tuple
@@ -54,14 +50,19 @@ def part_two(filename='input.txt', target='shiny gold'):
             contained_in = subtokens[1].replace('.', '').strip()
             graph[container].append((contained_in, count))
         
-    things_in_my_bag = 0
-    items_to_check = graph[target]
-    while len(items_to_check):
-        item, count = items_to_check.pop()
-        things_in_my_bag += count
-        for _ in range(count):
-            items_to_check.extend(graph[item])
+    # This looks ripe for memoization. We are going to be computing partial
+    # solutions over and over again. Here is a recursive function that will
+    # memorize previously computed answers and preload them rather than compute
+    # them again.
+    @lru_cache(maxsize=None)
+    def count_contents(x):
+        things_in_bag = 0
+        items_to_check = graph[x]
+        for item, count in items_to_check:
+            # Add one to account for the containing bag itself
+            things_in_bag += count*(count_contents(item)+1)
+        return things_in_bag
             
-    return things_in_my_bag
+    return count_contents(target)
     
 print(f'Part Two: {part_two()}')
