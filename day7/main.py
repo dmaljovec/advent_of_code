@@ -31,6 +31,9 @@ def part_one(filename='input.txt', target='shiny gold'):
 print(f'Part One: {part_one()}')
 
 def part_two(filename='input.txt', target='shiny gold'):
+    # This looks ripe for memoization. We are going to be computing partial
+    # solutions over and over again. My solution below does not employ this
+    # strategy, but I could be goaded into trying to do it.
 
     # Note, I am swapping the key and value of this dictionary. In this part,
     # I want the key to be the bag containing things and the value to be a tuple
