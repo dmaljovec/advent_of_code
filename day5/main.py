@@ -7,17 +7,12 @@ def get_seat_id(seat):
     row_bounds = [0, 2**marker]
     col_bounds = [0, 2**(len(seat)-marker)]
     
-    for i in seat[:marker]:
-        if i == 'F':
-            row_bounds[1] -= (1 + row_bounds[1] - row_bounds[0]) // 2
-        elif i == 'B':
-            row_bounds[0] += (1 + row_bounds[1] - row_bounds[0]) // 2
-    
-    for i in seat[marker:]:
-        if i == 'L':
-            col_bounds[1] -= (1 + col_bounds[1] - col_bounds[0]) // 2
-        elif i == 'R':
-            col_bounds[0] += (1 + col_bounds[1] - col_bounds[0]) // 2
+    for bsp, dim_bounds in [(seat[:marker], row_bounds), (seat[marker:], col_bounds)]:
+        for i in bsp:
+            if i in 'FL':
+                dim_bounds[1] -= (1 + dim_bounds[1] - dim_bounds[0]) // 2
+            elif i in 'BR':
+                dim_bounds[0] += (1 + dim_bounds[1] - dim_bounds[0]) // 2
         
     return row_bounds[0] * 8 + col_bounds[0]
     
