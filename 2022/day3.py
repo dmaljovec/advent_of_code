@@ -1,5 +1,5 @@
 import sys
-from aocd import get_data
+from aocd import get_data, submit
 
 data = get_data(day=3, year=2022).split("\n")
 zero_point = ord('a') - 1
@@ -19,7 +19,7 @@ for rucksack in data:
         offset = 0
     summand += ord(letter) - zero_point + offset
     
-print(f'Part One: {summand}')
+submit(summand, part="a", day=3, year=2022)
 
 summand = 0
 # Iterating in bunches of 3 at a time
@@ -36,4 +36,5 @@ for elf1, elf2, elf3 in zip(*[iter(data)]*3):
     else:
         offset = 0
     summand += ord(letter) - zero_point + offset
-print(f'Part Two: {summand}')
+
+submit(summand, part="b", day=3, year=2022)
