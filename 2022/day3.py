@@ -2,10 +2,9 @@ import sys
 from aocd import get_data
 
 data = get_data(day=3, year=2022).split("\n")
-
-summand = 0
 zero_point = ord('a') - 1
 
+summand = 0
 for rucksack in data:
     midpoint = len(rucksack) // 2
     intersection = set(rucksack[:midpoint]) & set(rucksack[midpoint:])
