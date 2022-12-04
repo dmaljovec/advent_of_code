@@ -23,6 +23,7 @@ for rucksack in data:
 print(f'Part One: {summand}')
 
 summand = 0
+# Iterating in bunches of 3 at a time
 # Stolen from Stack Overflow: https://stackoverflow.com/a/3415151/11580262
 for elf1, elf2, elf3 in zip(*[iter(data)]*3):
     intersection = set(elf1) & set(elf2) & set(elf3)
