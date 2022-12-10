@@ -45,17 +45,7 @@ def solve(instructions, num_knots):
     tail_positions.add(tuple(knots[-1]))
 
     for line in instructions:
-        direction, count = line.split(" ")
-        match direction:
-            case "U":
-                vector = [0, 1]
-            case "L":
-                vector = [-1, 0]
-            case "D":
-                vector = [0, -1]
-            case "R":
-                vector = [1, 0]
-        count = int(count)
+        vector, count = parse_instruction(line)
         while count:
             knots[0][0] += vector[0]
             knots[0][1] += vector[1]
