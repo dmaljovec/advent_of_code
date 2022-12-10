@@ -23,10 +23,7 @@ submit(summand, part="a", day=10, year=2022)
 CRT = ""
 for i in range(1, 241):
     col = (i - 1) % 40
-    if (col - 1) <= cycle_values[i] <= (col + 1):
-        CRT += "#"
-    else:
-        CRT += "."
+    CRT += "#" if (col - 1) <= cycle_values[i] <= (col + 1) else "."
 print("\n".join(textwrap.wrap(CRT, 40)))
 
 answer = input("What do you see?")
