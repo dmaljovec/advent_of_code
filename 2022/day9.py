@@ -33,8 +33,7 @@ def parse_instruction(line):
             vector = [0, -1]
         case "R":
             vector = [1, 0]
-    count = int(count)
-    return vector, count
+    return vector, int(count)
 
 
 def solve(instructions, num_knots):
