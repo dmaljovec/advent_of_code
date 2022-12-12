@@ -7,7 +7,6 @@ from time import time
 from collections import deque
 
 monkey_business = get_data(day=11, year=2022).split("\n\n")
-# monkey_business = open("test.txt", "r").read().split("\n\n")
 
 
 @total_ordering
