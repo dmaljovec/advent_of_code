@@ -43,9 +43,6 @@ class Monkey:
     def __lt__(self, other) -> bool:
         return self.touched < other.touched
 
-    def __repr__(self) -> str:
-        return f'Monkey {self.number} ({self.touched}): {",".join([str(i) for i in self.items])}'
-
 
 monkeys = []
 for data in monkey_business:
