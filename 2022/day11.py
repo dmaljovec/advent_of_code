@@ -11,7 +11,6 @@ monkey_business = get_data(day=11, year=2022).split("\n\n")
 @total_ordering
 @dataclass
 class Monkey:
-    """Class for keeping track of an item in inventory."""
 
     number: int
     items: deque[int]
