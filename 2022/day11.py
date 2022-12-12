@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from typing import Callable
 from functools import total_ordering, partial
 from copy import deepcopy
-from time import time
 from collections import deque
 
 monkey_business = get_data(day=11, year=2022).split("\n\n")
