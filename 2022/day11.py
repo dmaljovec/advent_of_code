@@ -3,17 +3,14 @@ from dataclasses import dataclass
 from typing import Callable
 from functools import total_ordering, partial
 from copy import deepcopy
-from time import time
 from collections import deque
 
 monkey_business = get_data(day=11, year=2022).split("\n\n")
-# monkey_business = open("test.txt", "r").read().split("\n\n")
 
 
 @total_ordering
 @dataclass
 class Monkey:
-    """Class for keeping track of an item in inventory."""
 
     number: int
     items: deque[int]
@@ -43,9 +40,6 @@ class Monkey:
 
     def __lt__(self, other) -> bool:
         return self.touched < other.touched
-
-    def __repr__(self) -> str:
-        return f'Monkey {self.number} ({self.touched}): {",".join([str(i) for i in self.items])}'
 
 
 monkeys = []
