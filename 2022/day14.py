@@ -18,7 +18,6 @@ def attempt_move(x, y):
 
 opening = (500, 0)
 rock_paths = get_data(day=DAY, year=YEAR).split("\n")
-# rock_paths = ["498,4 -> 498,6 -> 496,6", "503,4 -> 502,4 -> 502,9 -> 494,9"]
 
 rocks = set()
 
@@ -39,7 +38,6 @@ original_rocks = set(rocks)
 # We are done when a grain of sand is attains a higher value than this height
 lowest_rock = max(rocks, key=lambda x: x[1])[1]
 
-count = 0
 while True:
     sand = opening
     next_x, next_y = attempt_move(*sand)
@@ -49,14 +47,12 @@ while True:
     if next_y > lowest_rock:
         break
     rocks.add(sand)
-    count += 1
 
-submit(count, part="a", day=DAY, year=YEAR)
+submit(len(rocks) - len(original_rocks), part="a", day=DAY, year=YEAR)
 
 floor = lowest_rock + 2
 rocks = set(original_rocks)
 
-count = 0
 while True:
     sand = opening
     next_x, next_y = attempt_move(*sand)
@@ -64,8 +60,7 @@ while True:
         sand = (next_x, next_y)
         next_x, next_y = attempt_move(*sand)
     rocks.add(sand)
-    count += 1
     if sand == opening:
         break
 
-submit(count, part="b", day=DAY, year=YEAR)
+submit(len(rocks) - len(original_rocks), part="b", day=DAY, year=YEAR)
