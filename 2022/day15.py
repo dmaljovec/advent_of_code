@@ -1,34 +1,25 @@
 from aocd import get_data, submit
 import re
+from time import time
+
+################################################################################
+## Common bits
 
 YEAR = 2022
 DAY = 15
+
+data = get_data(day=DAY, year=YEAR).split("\n")
 
 
 def manhattan_distance(x1, y1, x2, y2):
     return abs(x1 - x2) + abs(y1 - y2)
 
 
-data = get_data(day=DAY, year=YEAR).split("\n")
-# data = [
-#     "Sensor at x=2, y=18: closest beacon is at x=-2, y=15",
-#     "Sensor at x=9, y=16: closest beacon is at x=10, y=16",
-#     "Sensor at x=13, y=2: closest beacon is at x=15, y=3",
-#     "Sensor at x=12, y=14: closest beacon is at x=10, y=16",
-#     "Sensor at x=10, y=20: closest beacon is at x=10, y=16",
-#     "Sensor at x=14, y=17: closest beacon is at x=10, y=16",
-#     "Sensor at x=8, y=7: closest beacon is at x=2, y=10",
-#     "Sensor at x=2, y=0: closest beacon is at x=2, y=10",
-#     "Sensor at x=0, y=11: closest beacon is at x=2, y=10",
-#     "Sensor at x=20, y=14: closest beacon is at x=25, y=17",
-#     "Sensor at x=17, y=20: closest beacon is at x=21, y=22",
-#     "Sensor at x=16, y=7: closest beacon is at x=15, y=3",
-#     "Sensor at x=14, y=3: closest beacon is at x=15, y=3",
-#     "Sensor at x=20, y=1: closest beacon is at x=15, y=3",
-# ]
+################################################################################
+## Part A
 
 target_row = 2000000
-# target_row = 10
+
 impossible_cols = set()
 beacons_in_row = set()
 for line in data:
@@ -45,3 +36,66 @@ for line in data:
         impossible_cols.add(x)
 
 submit(len(impossible_cols - beacons_in_row), part="a", day=DAY, year=YEAR)
+
+################################################################################
+## Part B
+
+MIN = 0
+MAX = 4000000
+
+# The single point must lie just outside the boundary of one of our sensors'
+# range, otherwise there would be more than one free space
+def boundary(x, y, distance):
+    distance += 1
+    bounds = list()
+
+    for sgn_x in [-1, 1]:
+        for sgn_y in [-1, 1]:
+            for i in range(distance + 1):
+                next_x = x + sgn_x * i
+                next_y = y + sgn_y * (distance - i)
+                if MIN <= next_x <= MAX and MIN <= next_y <= MAX:
+                    bounds.append((next_x, next_y))
+    return bounds
+
+
+sensors = []
+for line in data:
+    match = re.match(
+        "Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)",
+        line,
+    )
+    sensor_x, sensor_y, beacon_x, beacon_y = map(int, match.groups())
+    distance = manhattan_distance(sensor_x, sensor_y, beacon_x, beacon_y)
+    sensors.append((sensor_x, sensor_y, distance))
+
+
+# It is a lot faster to shove this all into a giant list and de-dupe it at the
+# end (<20 s) compared to continually union-ing sets (~120 s)
+start = time()
+candidates = list()
+for sensor in sensors:
+    candidates.extend(boundary(*sensor))
+end = time()
+print(f"Time to compute all boundaries: {end-start} s")
+
+start = time()
+candidates = set(candidates)
+end = time()
+print(f"Time to dedupe boundaries: {end-start} s")
+
+answer = None
+# This is a huge list (~50M), but at least the inner loop here is O(1)
+start = time()
+for pt in candidates:
+    valid = True
+    for sensor in sensors:
+        if manhattan_distance(pt[0], pt[1], sensor[0], sensor[1]) <= sensor[2]:
+            valid = False
+            break
+    if valid:
+        answer = pt[0] * MAX + pt[1]
+        break
+end = time()
+print(f"Time to find a boundary point not within any sensor's field: {end-start}")
+submit(answer, part="b", day=DAY, year=YEAR)
