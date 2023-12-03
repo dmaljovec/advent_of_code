@@ -58,7 +58,7 @@ fn get_number_pt2(line: &String) -> i32 {
 
     let digits = format!("{}{}", first, last);
     let result = digits.parse::<i32>().unwrap();
-    println!("{}: {}", result, line);
+    // println!("{}: {}", result, line);
     result
 }
 
