@@ -1,22 +1,16 @@
 use regex::Regex;
+use crate::utils;
 
 pub fn solution_pt1(input: &str) -> i32 {
-    parse_file(input).iter()
+    utils::parse_file(input).iter()
     .map(get_number)
     .sum()
 }
 
 pub fn solution_pt2(input: &str) -> i32 {
-    parse_file(input).iter()
+    utils::parse_file(input).iter()
     .map(get_number_pt2)
     .sum()
-}
-
-fn parse_file(file_name: &str) -> Vec<String> {
-    let contents = std::fs::read_to_string(file_name)
-        .expect("Something went wrong reading the file")
-        .lines().map(String::from).collect();
-    contents
 }
 
 fn translate(number: &str) -> i32 {
@@ -58,14 +52,8 @@ fn get_number_pt2(line: &String) -> i32 {
 }
 
 #[cfg(test)]
-mod tests {
+mod day1_tests {
     use super::*;
-
-    #[test]
-    fn test_parse_file() {
-        let input = "day1/test.txt";
-        assert_eq!(parse_file(input), ["abcd","efgh"]);
-    }
 
     #[test]
     fn test_solution() {
